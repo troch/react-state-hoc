@@ -1,6 +1,6 @@
 {
   "name": "react-state-hoc",
-  "version": "1.0.4",
+  "version": "1.0.0",
   "description": "A React higher-order component for abstracting state away",
   "main": "dist/commmonjs/state.js",
   "scripts": {
