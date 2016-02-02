@@ -1,8 +1,8 @@
 {
   "name": "react-state-hoc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A React higher-order component for abstracting state away",
-  "main": "dist/commmonjs/state.js",
+  "main": "dist/commonjs/state.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register modules/state.test.js",
     "lint": "eslint modules/state.js",
