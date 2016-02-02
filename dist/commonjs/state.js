@@ -48,6 +48,11 @@ function state() {
 
             return StateHoc;
         })(_react.Component);
+
+        var componentName = StatelessComponent.displayName || StatelessComponent.name || 'Component';
+        StateHoc.displayName = 'Stateful[' + componentName + ']';
+
+        return StateHoc;
     };
 }
 

@@ -111,6 +111,10 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 
                 return StateHoc;
             })(_react.Component);
+
+            var componentName = StatelessComponent.displayName || StatelessComponent.name || 'Component';
+            StateHoc.displayName = 'Stateful[' + componentName + ']';
+            return StateHoc;
         };
     }
 
