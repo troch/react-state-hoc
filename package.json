@@ -1,6 +1,6 @@
 {
   "name": "react-state-hoc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A React higher-order component for abstracting state away",
   "main": "dist/commonjs/state.js",
   "scripts": {
@@ -40,11 +40,11 @@
     "eslint": "^1.10.2",
     "jsdom": "^7.1.0",
     "mocha": "^2.3.4",
-    "react-addons-test-utils": "^0.14.3",
+    "react-addons-test-utils": "^15.0.0",
     "react-hyperscript": "^2.2.0"
   },
   "dependencies": {
     "invariant": "^2.2.0",
-    "react": "^0.14.0"
+    "react": "~0.14.0 || ^15.0.0"
   }
 }
