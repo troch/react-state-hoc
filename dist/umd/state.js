@@ -1,7 +1,3 @@
-'use strict';
-
-function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
-
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
         define(['exports', 'react'], factory);
@@ -15,6 +11,8 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
         global.state = mod.exports;
     }
 })(this, function (exports, _react) {
+    'use strict';
+
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
@@ -39,7 +37,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
         }
     }
 
-    var _createClass = (function () {
+    var _createClass = function () {
         function defineProperties(target, props) {
             for (var i = 0; i < props.length; i++) {
                 var descriptor = props[i];
@@ -55,14 +53,14 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
             if (staticProps) defineProperties(Constructor, staticProps);
             return Constructor;
         };
-    })();
+    }();
 
     function _possibleConstructorReturn(self, call) {
         if (!self) {
             throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
         }
 
-        return call && ((typeof call === 'undefined' ? 'undefined' : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+        return call && (typeof call === "object" || typeof call === "function") ? call : self;
     }
 
     function _inherits(subClass, superClass) {
@@ -82,15 +80,16 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
     }
 
     function state() {
-        var initialState = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+        var initialState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
         return function (StatelessComponent) {
-            var StateHoc = (function (_Component) {
+            var StateHoc = function (_Component) {
                 _inherits(StateHoc, _Component);
 
                 function StateHoc(props) {
                     _classCallCheck(this, StateHoc);
 
-                    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StateHoc).call(this, props));
+                    var _this = _possibleConstructorReturn(this, (StateHoc.__proto__ || Object.getPrototypeOf(StateHoc)).call(this, props));
 
                     _this.state = typeof initialState === 'function' ? initialState(props) : initialState;
                     _this.setState = _this.setState.bind(_this);
@@ -100,9 +99,11 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
                 _createClass(StateHoc, [{
                     key: 'render',
                     value: function render() {
-                        var state = this.state;
-                        var props = this.props;
-                        var setState = this.setState;
+                        var state = this.state,
+                            props = this.props,
+                            setState = this.setState;
+
+
                         return (0, _react.createElement)(StatelessComponent, _extends({}, props, state, {
                             setState: setState
                         }));
@@ -110,10 +111,11 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
                 }]);
 
                 return StateHoc;
-            })(_react.Component);
+            }(_react.Component);
 
             var componentName = StatelessComponent.displayName || StatelessComponent.name || 'Component';
             StateHoc.displayName = 'Stateful[' + componentName + ']';
+
             return StateHoc;
         };
     }
