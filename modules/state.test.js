@@ -1,15 +1,14 @@
-import { createRenderer, renderIntoDocument, findRenderedComponentWithType } from 'react-addons-test-utils';
+import { createRenderer, renderIntoDocument, findRenderedComponentWithType } from 'react-dom/test-utils';
 import { expect } from 'chai';
 import React, { Component } from 'react';
 import h from 'react-hyperscript';
 import state from './state';
-import jsdom from 'jsdom';
+import { JSDOM } from 'jsdom';
 
-const doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
-const win = doc.defaultView;
+const { window } = new JSDOM('<!doctype html><html><body></body></html>');
 
-global.document = doc;
-global.window = win;
+global.document = window.document;
+global.window = window;
 
 describe('State hoc', function() {
     it('should abstract state away', function() {
