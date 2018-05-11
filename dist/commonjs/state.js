@@ -18,6 +18,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function state() {
     var initialState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var mapSetStateToProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {
+        return function () {
+            return {};
+        };
+    };
 
     return function (StatelessComponent) {
         var StateHoc = function (_Component) {
@@ -30,6 +35,7 @@ function state() {
 
                 _this.state = typeof initialState === 'function' ? initialState(props) : initialState;
                 _this.setState = _this.setState.bind(_this);
+                _this.mappedProps = mapSetStateToProps(_this.props)(_this.setState);
                 return _this;
             }
 
@@ -38,10 +44,11 @@ function state() {
                 value: function render() {
                     var state = this.state,
                         props = this.props,
-                        setState = this.setState;
+                        setState = this.setState,
+                        mappedProps = this.mappedProps;
 
 
-                    return (0, _react.createElement)(StatelessComponent, _extends({}, props, state, {
+                    return (0, _react.createElement)(StatelessComponent, _extends({}, props, state, mappedProps, {
                         setState: setState
                     }));
                 }

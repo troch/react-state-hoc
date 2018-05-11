@@ -20,33 +20,32 @@ npm install --save react-state-hoc
 ```
 
 
-### Usage
+### withState(initialState, mapSetStateToProps)(BaseComponent)
 
 Create a new component by wrapping your component with `state` HOC. Alongside the properties you specify, the created component will receive its state as props with a `setState` function.
 
-__Important notice with ES5__
+- `initialState`: an object or a function of initial props returning an object
+- `mapSetStateToProps`: a function returning additional props (`initialProps => setState => props`)
 
-> babel 6 changed the way transpiled default exports work. See [Babel 6 changes how it exports default](http://stackoverflow.com/questions/33505992/babel-6-changes-how-it-exports-default/33506169#33506169) on stack overflow.
-
-```javascript
-// ES5
-var state = require('react-state-hoc').default;
-```
 
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-function StatelessButton({ counter, setState }) {
+function StatelessButton({ counter, setCounter }) {
     return (
-        <button onClick={ () => setState({ counter: counter + 1 }) }>
+        <button onClick={ () => setCounter(counter + 1) }>
             Clicked { counter } times.
         </button>
     );
 }
 
-const StatefulButton1 = state({ counter: 0 })(StatelessButton);
-const StatefulButton2 = state({ counter: 10 })(StatelessButton);
+const mapSetStateToProps = () => setState => ({
+    setCounter: (counter) => setState({ counter })
+})
+
+const StatefulButton1 = state({ counter: 0 }, mapSetStateToProps)(StatelessButton);
+const StatefulButton2 = state({ counter: 10 }, mapSetStateToProps)(StatelessButton);
 
 ReactDOM.render(
     <div>
