@@ -1,9 +1,7 @@
 language: node_js
 cache: yarn
 node_js:
-  - '7'
-before_install:
-  - npm i -g babel-cli
+  - '8'
 script:
   - npm run build
   - npm test
