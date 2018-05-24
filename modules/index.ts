@@ -6,6 +6,6 @@ import {
     MapStateCreatorsToProps
 } from './types'
 
-export { SetState, MapSetStateToProps, MapStateCreatorsToProps }
+export { withState, SetState, MapSetStateToProps, MapStateCreatorsToProps }
 
 export default withState
