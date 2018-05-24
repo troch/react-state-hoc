@@ -8,44 +8,64 @@
 Keep your components simple, testable and composable by using higher-order components.
 This higher-order component will abstract state away from components so you can keep using functional stateless components.
 
-> A higher-order component is just a function that takes an existing component and returns another component that wraps it.
-
-Read about higher-order components here (applies to deku as well): __[Mixins Are Dead. Long Live Composition](https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750#.c8wftb16t)__.
-
-
-### Installation
+## Installation
 
 ```sh
 npm install --save react-state-hoc
+# or
+yarn add react-state-hoc
 ```
 
-
-### withState(initialState, mapSetStateToProps)(BaseComponent)
+## withState(initialState, mapSetStateToProps)(BaseComponent)
 
 Create a new component by wrapping your component with `state` HOC. Alongside the properties you specify, the created component will receive its state as props with a `setState` function.
 
-- `initialState`: an object or a function of initial props returning an object
-- `mapSetStateToProps`: a function returning additional props (`initialProps => setState => props`)
+*   `initialState`: an object or a function of initial props returning an object
+*   `mapSetStateToProps`:
+  * A function returning additional props (`initialProps => setState => props`)
+  * Or an object of state creators
 
+```js
+const mapSetStateToProps = () => setState => ({
+    setCounter: counter => setState({ counter })
+})
+```
+
+or
+
+```js
+const mapSetStateToProps = {
+    setCounter: counter => ({ counter })
+}
+```
+
+
+## Example
 
 ```javascript
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import withState from 'react-state-hoc'
 
 function StatelessButton({ counter, setCounter }) {
     return (
-        <button onClick={ () => setCounter(counter + 1) }>
-            Clicked { counter } times.
+        <button onClick={() => setCounter(counter + 1)}>
+            Clicked {counter} times.
         </button>
-    );
+    )
 }
 
 const mapSetStateToProps = () => setState => ({
-    setCounter: (counter) => setState({ counter })
+    setCounter: counter => setState({ counter })
 })
 
-const StatefulButton1 = state({ counter: 0 }, mapSetStateToProps)(StatelessButton);
-const StatefulButton2 = state({ counter: 10 }, mapSetStateToProps)(StatelessButton);
+const StatefulButton1 = withState({ counter: 0 }, mapSetStateToProps)(
+    StatelessButton
+)
+
+const StatefulButton2 = withState({ counter: 10 }, mapSetStateToProps)(
+    StatelessButton
+)
 
 ReactDOM.render(
     <div>
@@ -53,5 +73,5 @@ ReactDOM.render(
         <StatefulButton2 />
     </div>,
     document.getElementById('app')
-);
+)
 ```

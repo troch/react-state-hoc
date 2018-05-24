@@ -1,4 +1,4 @@
-export declare type SetState<P, S> = (state: ((prevState: Readonly<S>, props: P) => Partial<S> | null), callback?: () => void) => void;
+export declare type SetState<P, S> = (state: ((prevState: Readonly<S>, props: P) => Partial<S>) | Partial<S>, callback?: () => void) => void;
 export interface SetStateProp<P, S> {
     setState: SetState<P, S>;
 }
