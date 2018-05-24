@@ -6,6 +6,7 @@
   "jsnext:main": "index.es.js",
   "module": "index.es.js",
   "sideEffects": "false",
+  "typings": "typings/index.d.ts",
   "scripts": {
     "test": "jest",
     "build": "rollup -c rollup.config.js",
