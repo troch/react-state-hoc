@@ -22,7 +22,8 @@ function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
     ): React.ComponentClass<P> => {
         return class StateHoc extends React.Component<P, S> {
             public static displayName: string = 'WithState'
-            public static mapToProps: MapToProps<P, S, ExtraP>
+
+            public mapToProps: MapToProps<P, S, ExtraP>
 
             constructor(props) {
                 super(props)
