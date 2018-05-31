@@ -1,18 +1,19 @@
 import * as React from 'react'
 import {
     InitialState,
-    MapSetStateToProps,
+    MapToProps,
+    MapStateToProps,
     MapStateCreatorsToProps,
     SetState,
     SetStateProp
 } from './types'
-import bindMapSetStateToProps from './bindMapSetStateToProps'
+import bindMapStateToProps from './bindMapStateToProps'
 
 function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
     initialState: InitialState<P, S>,
-    mapSetStateToProps:
-        | MapSetStateToProps<P, S, ExtraP>
-        | MapStateCreatorsToProps<S, ExtraP>
+    mapStateToProps:
+        | MapStateToProps<P, S, ExtraP>
+        | MapStateCreatorsToProps<S, ExtraP>,
 ) {
     type FinalProps = P & S & ExtraP & { setState: SetState<P, S> }
 
@@ -21,8 +22,7 @@ function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
     ): React.ComponentClass<P> => {
         return class StateHoc extends React.Component<P, S> {
             public static displayName: string = 'WithState'
-
-            public mappedProps: ExtraP
+            public static mapToProps: MapToProps<P, S, ExtraP>
 
             constructor(props) {
                 super(props)
@@ -33,24 +33,19 @@ function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
 
                 this.setState = this.setState.bind(this)
 
-                this.mappedProps = bindMapSetStateToProps(
-                    mapSetStateToProps,
+                this.mapToProps = bindMapStateToProps(
+                    mapStateToProps,
                     this.props,
-                    this.setState as SetState<P, S>
                 )
             }
 
             public render() {
-                const { state, props, setState, mappedProps } = this
+                const { state, props, setState, mapToProps } = this
 
-                return (
-                    <BaseComponent
-                        {...props}
-                        {...state}
-                        {...mappedProps}
-                        setState={setState as SetState<P, S>}
-                    />
-                )
+                return React.createElement(BaseComponent, {
+                    ...props,
+                    ...this.mapToProps(state, setState)
+                })
             }
         }
     }
