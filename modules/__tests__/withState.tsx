@@ -21,8 +21,10 @@ describe('withState', () => {
             { setVisibility: visible => ({ visible }) }
         )(Component)
 
-        expect(shallow(<FinalComponent />).prop('setState')).toBeDefined()
-        expect(shallow(<FinalComponent />).prop('visible')).toBe(false)
-        expect(shallow(<FinalComponent />).prop('setVisibility')).toBeDefined()
+        const component = shallow(<FinalComponent />)
+
+        expect(component.prop('setState')).toBeDefined()
+        expect(component.prop('visible')).toBe(false)
+        expect(component.prop('setVisibility')).toBeDefined()
     })
 })
