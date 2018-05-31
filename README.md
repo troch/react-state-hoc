@@ -5,8 +5,7 @@
 
 > A React higher-order component for abstracting away state
 
-Keep your components simple, testable and composable by using higher-order components.
-This higher-order component will abstract state away from components so you can keep using functional stateless components.
+Keep your components simple, testable, and composable by using higher-order components. This higher-order component will abstract state away from components, so you can keep using functional stateless components.
 
 ## Installation
 
@@ -22,11 +21,12 @@ Create a new component by wrapping your component with `state` HOC. Alongside th
 
 *   `initialState`: an object or a function of initial props returning an object
 *   `mapSetStateToProps`:
-  * A function returning additional props (`initialProps => setState => props`)
+  * A function returning additional props (`initialProps => (state, setState) => props`)
   * Or an object of state creators
 
 ```js
-const mapSetStateToProps = () => setState => ({
+const mapSetStateToProps = () => (state, setState) => ({
+    stateObject: state,
     setCounter: counter => setState({ counter })
 })
 ```
