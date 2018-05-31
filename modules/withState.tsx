@@ -44,8 +44,8 @@ function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
                 const { state, props, setState, mapToProps } = this
 
                 return React.createElement(BaseComponent, {
-                    ...props,
-                    ...this.mapToProps(state, setState)
+                    ...props as any,
+                    ...this.mapToProps(state, setState) as any
                 })
             }
         }
