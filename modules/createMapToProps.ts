@@ -5,7 +5,7 @@ import {
     SetState
 } from './types'
 
-export default function bindMapStateToProps<P, S, ExtraP>(
+export default function createMapToProps<P, S, ExtraP>(
     initialProps: P,
     mapStateToProps?:
         | MapStateToProps<P, S, ExtraP>
