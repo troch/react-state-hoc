@@ -1,10 +1,10 @@
 import { MapToProps, MapStateToProps, MapStateCreatorsToProps, SetState } from './types'
 
 export default function bindMapStateToProps<P, S, ExtraP>(
-    mapStateToProps:
+    initialProps: P,
+    mapStateToProps?:
         | MapStateToProps<P, S, ExtraP>
         | MapStateCreatorsToProps<S, ExtraP>,
-    initialProps: P,
 ): MapToProps<P, S, ExtraP> {
     if (typeof mapStateToProps === 'function') {
         return mapStateToProps(initialProps)

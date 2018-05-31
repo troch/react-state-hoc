@@ -7,11 +7,11 @@ import {
     SetState,
     SetStateProp
 } from './types'
-import bindMapStateToProps from './bindMapStateToProps'
+import createMapToProps from './createMapToProps'
 
 function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
     initialState: InitialState<P, S>,
-    mapStateToProps:
+    mapStateToProps?:
         | MapStateToProps<P, S, ExtraP>
         | MapStateCreatorsToProps<S, ExtraP>,
 ) {
@@ -34,9 +34,9 @@ function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
 
                 this.setState = this.setState.bind(this)
 
-                this.mapToProps = bindMapStateToProps(
-                    mapStateToProps,
+                this.mapToProps = createMapToProps(
                     this.props,
+                    mapStateToProps,
                 )
             }
 

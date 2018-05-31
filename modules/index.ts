@@ -1,11 +1,7 @@
 import withState from './withState'
 
-import {
-    SetState,
-    MapSetStateToProps,
-    MapStateCreatorsToProps
-} from './types'
+import { SetState, MapStateToProps, MapStateCreatorsToProps } from './types'
 
-export { withState, SetState, MapSetStateToProps, MapStateCreatorsToProps }
+export { withState, SetState, MapStateToProps, MapStateCreatorsToProps }
 
 export default withState
