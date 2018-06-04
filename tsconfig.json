@@ -11,7 +11,7 @@
         "jsx": "react"
     },
     "include": [
-        "./modules/index.ts"
+        "./modules/*.ts"
     ],
     "exclude": [
         "./modules/__tests__/*.*"
