@@ -10,7 +10,8 @@
   "scripts": {
     "test": "jest",
     "build": "rollup -c rollup.config.js",
-    "clog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+    "clog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "precommit": "lint-staged"
   },
   "repository": {
     "type": "git",
@@ -53,7 +54,7 @@
   },
   "lint-staged": {
       "*.{ts,tsx}": ["prettier --write", "tslint", "git add"],
-      "*.{js,json}": ["prettier --write", "git add"]
+      "*.{js}": ["prettier --write", "git add"]
   },
   "jest": {
       "transform": {
