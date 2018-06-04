@@ -13,7 +13,7 @@ function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
     initialState: InitialState<P, S>,
     mapStateToProps?:
         | MapStateToProps<P, S, ExtraP>
-        | MapStateCreatorsToProps<S, ExtraP>,
+        | MapStateCreatorsToProps<S, ExtraP>
 ) {
     type FinalProps = P & S & ExtraP & { setState: SetState<P, S> }
 
@@ -34,18 +34,15 @@ function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
 
                 this.setState = this.setState.bind(this)
 
-                this.mapToProps = createMapToProps(
-                    this.props,
-                    mapStateToProps,
-                )
+                this.mapToProps = createMapToProps(this.props, mapStateToProps)
             }
 
             public render() {
                 const { state, props, setState, mapToProps } = this
 
                 return React.createElement(BaseComponent, {
-                    ...props as any,
-                    ...this.mapToProps(state, setState) as any
+                    ...(props as any),
+                    ...(this.mapToProps(state, setState) as any)
                 })
             }
         }
