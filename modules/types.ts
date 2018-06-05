@@ -7,14 +7,15 @@ export interface SetStateProp<P, S> {
     setState: SetState<P, S>
 }
 
-export type MapToProps<P, S, ExtraP> = (
+export type MergeProps<P, S, ExtraP> = (
     state: S,
-    setState: SetState<P, S>
-) => ExtraP
-
-export type MapStateToProps<P, S, ExtraP> = (
+    setStateProps: ExtraP,
     initialProps: P
-) => MapToProps<P, S, ExtraP>
+) => P
+
+export type MapSetStateToProps<P, S, ExtraP> = (
+    initialProps: P
+) => (setState: SetState<P, S>) => ExtraP
 
 export type MapStateCreatorsToProps<S, ExtraP> = {
     [K in keyof ExtraP]: (...args: any[]) => Partial<S>

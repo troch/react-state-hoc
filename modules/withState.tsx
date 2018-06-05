@@ -1,21 +1,32 @@
 import * as React from 'react'
 import {
     InitialState,
-    MapToProps,
-    MapStateToProps,
+    MergeProps,
+    MapSetStateToProps,
     MapStateCreatorsToProps,
     SetState,
     SetStateProp
 } from './types'
-import createMapToProps from './createMapToProps'
+import bindMapSetStateToProps from './bindMapSetStateToProps'
+
+const defaultMapSetStateToProps: MapSetStateToProps<{}, {}, {}> = () => {
+    return setState => ({ setState })
+}
+
+const defaultMergeProps = (state, mappedProps, props) => ({
+    ...props,
+    ...state,
+    ...mappedProps
+})
 
 function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
     initialState: InitialState<P, S>,
-    mapStateToProps?:
-        | MapStateToProps<P, S, ExtraP>
-        | MapStateCreatorsToProps<S, ExtraP>
+    mapSetStateToProps?:
+        | MapSetStateToProps<P, S, ExtraP>
+        | MapStateCreatorsToProps<S, ExtraP>,
+    mergeProps?: MergeProps<P, S, ExtraP>
 ) {
-    type FinalProps = P & S & ExtraP & { setState: SetState<P, S> }
+    type FinalProps = P
 
     return (
         BaseComponent: React.ComponentType<FinalProps>
@@ -23,7 +34,8 @@ function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
         return class StateHoc extends React.Component<P, S> {
             public static displayName: string = 'WithState'
 
-            public mapToProps: MapToProps<P, S, ExtraP>
+            public mappedProps: ExtraP
+            public merge: MergeProps<P, S, ExtraP>
 
             constructor(props) {
                 super(props)
@@ -34,16 +46,27 @@ function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
 
                 this.setState = this.setState.bind(this)
 
-                this.mapToProps = createMapToProps(this.props, mapStateToProps)
+                this.mappedProps = bindMapSetStateToProps(
+                    mapSetStateToProps ||
+                        (defaultMapSetStateToProps as MapSetStateToProps<
+                            P,
+                            S,
+                            ExtraP
+                        >),
+                    this.setState as SetState<P, S>,
+                    this.props
+                )
+
+                this.merge = mergeProps || defaultMergeProps
             }
 
             public render() {
-                const { state, props, setState, mapToProps } = this
+                const { state, props, setState, mappedProps, merge } = this
 
-                return React.createElement(BaseComponent, {
-                    ...(props as any),
-                    ...(this.mapToProps(state, setState) as any)
-                })
+                return React.createElement(
+                    BaseComponent,
+                    merge(state, mappedProps, props)
+                )
             }
         }
     }
