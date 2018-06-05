@@ -1,20 +1,20 @@
 import { MapSetStateToProps, MapStateCreatorsToProps, SetState } from './types'
 
 export default function bindSetMapStateToProps<P, S, ExtraP>(
-    mapStateToProps:
+    mapSetStateToProps:
         | MapSetStateToProps<P, S, ExtraP>
         | MapStateCreatorsToProps<S, ExtraP>,
     setState: SetState<P, S>,
     initialProps: P
 ): ExtraP {
-    if (typeof mapStateToProps === 'function') {
-        return mapStateToProps(initialProps)(setState)
+    if (typeof mapSetStateToProps === 'function') {
+        return mapSetStateToProps(initialProps)(setState)
     }
 
-    if (typeof mapStateToProps === 'object') {
-        return Object.keys(mapStateToProps).reduce(
+    if (typeof mapSetStateToProps === 'object') {
+        return Object.keys(mapSetStateToProps).reduce(
             (mappedProps: Partial<ExtraP>, propName: string) => {
-                const stateFactory = mapStateToProps[propName]
+                const stateFactory = mapSetStateToProps[propName]
 
                 mappedProps[propName] = (...args) =>
                     setState(stateFactory(...args) as Partial<S>)
