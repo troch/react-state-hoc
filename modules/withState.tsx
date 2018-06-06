@@ -19,12 +19,17 @@ const defaultMergeProps = (state, mappedProps, props) => ({
     ...mappedProps
 })
 
-function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
+function withState<
+    P extends {},
+    S extends {},
+    ExtraP extends {} = {},
+    MergedP extends {} = {}
+>(
     initialState: InitialState<P, S>,
     mapSetStateToProps?:
         | MapSetStateToProps<P, S, ExtraP>
         | MapStateCreatorsToProps<S, ExtraP>,
-    mergeProps?: MergeProps<P, S, ExtraP>
+    mergeProps?: MergeProps<P, S, ExtraP, MergedP>
 ) {
     type FinalProps = P
 
@@ -35,7 +40,7 @@ function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
             public static displayName: string = 'WithState'
 
             public mappedProps: ExtraP
-            public merge: MergeProps<P, S, ExtraP>
+            public merge: MergeProps<P, S, ExtraP, MergedP>
 
             constructor(props) {
                 super(props)
