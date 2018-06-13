@@ -31,10 +31,8 @@ function withState<
         | MapStateCreatorsToProps<S, ExtraP>,
     mergeProps?: MergeProps<P, S, ExtraP, MergedP>
 ) {
-    type FinalProps = P
-
     return (
-        BaseComponent: React.ComponentType<FinalProps>
+        BaseComponent: React.ComponentType<MergedP>
     ): React.ComponentClass<P> => {
         return class StateHoc extends React.Component<P, S> {
             public static displayName: string = 'WithState'
