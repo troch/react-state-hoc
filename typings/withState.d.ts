@@ -2,22 +2,22 @@
 import * as React from 'react'
 import {
     InitialState,
-    MapStateToProps,
+    MergeProps,
+    MapSetStateToProps,
     MapStateCreatorsToProps,
     SetState
 } from './types'
-declare function withState<P extends {}, S extends {}, ExtraP extends {} = {}>(
+
+declare function withState<
+    P extends {},
+    S extends {},
+    ExtraP extends {} = {},
+    MergedP extends {} = {}
+>(
     initialState: InitialState<P, S>,
-    mapStateToProps?:
-        | MapStateToProps<P, S, ExtraP>
-        | MapStateCreatorsToProps<S, ExtraP>
-): (
-    BaseComponent: React.ComponentType<
-        P &
-            S &
-            ExtraP & {
-                setState: SetState<P, S>
-            }
-    >
-) => React.ComponentClass<P>
+    mapSetStateToProps?:
+        | MapSetStateToProps<P, S, ExtraP>
+        | MapStateCreatorsToProps<S, ExtraP>,
+    mergeProps?: MergeProps<P, S, ExtraP, MergedP>
+): (BaseComponent: React.ComponentType<MergedP>) => React.ComponentClass<P>
 export default withState
