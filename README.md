@@ -15,29 +15,72 @@ npm install --save react-state-hoc
 yarn add react-state-hoc
 ```
 
-## withState(initialState, mapSetStateToProps)(BaseComponent)
+## API
 
-Create a new component by wrapping your component with `state` HOC. Alongside the properties you specify, the created component will receive its state as props with a `setState` function.
+### withState(initialState, mapSetStateToProps?, mergeProps?)(BaseComponent)
 
-*   `initialState`: an object or a function of initial props returning an object
-*   `mapSetStateToProps`:
-  * A function returning additional props (`initialProps => (state, setState) => props`)
-  * Or an object of state creators
+Wraps your `BaseComponent` with a stateful component, passing the state into the `BaseComponent` as props. By default, state will be spread into the component's props, plus the `setState` function is passed through.
 
-```js
-const mapSetStateToProps = () => (state, setState) => ({
-    stateObject: state,
-    setCounter: counter => setState({ counter })
-})
-```
+Two optional arguments allow you to a) define state creators, and b) customise which props are passed into the `BaseComponent`.
 
-or
+*   `initialState` can be either:
+    * An object, to be used as the component's initial state.
 
-```js
-const mapSetStateToProps = {
-    setCounter: counter => ({ counter })
-}
-```
+        ```js
+        withState({ visible: true })(BaseComponent)
+        ```
+
+    * A function, which maps initial props to initial state.
+
+        ```js
+        withState(props => ({ visible: props.visible }))(BaseComponent)
+        ```
+
+*   `mapSetStateToProps` can be either:
+    * An object, containing state creators. Each state creator is a function which maps input arguments to new state. State creators are a convenient shorthand which automatically binds `setState` into smaller functions.
+
+        ```js
+        withState(
+            { visible: true },
+            { setVisibility: visible => ({ visible }) }
+        )(BaseComponent)
+        ```
+
+    * A function, mapping `initialProps` and `setState` to state creators.
+
+        ```js
+        withState({ state: null }, initialProps => setState => ({
+            setValue: value => setState({
+                someState: initialProps.mapValue(value)
+            })
+        }))(BaseComponent)
+        ```
+
+        **Default:**
+
+        ```js
+        () => setState => ({ setState })
+        ```
+
+* `mergeProps`: A function mapping the current `state`, `stateCreators`, and `props` into the `BaseComponent`'s props.
+
+    ```js
+    withState(
+        { visible: true },
+        { setVisibility: visible => ({ visible }) },
+        (state, stateCreators, props) => ({
+            ...state,
+            ...stateCreators
+            // deliberately not passing props through to BaseComponent
+        })
+    )(BaseComponent)
+    ```
+
+    **Default:**
+
+    ```js
+    (state, creators, props) => ({ ...props, ...creators, ...state })
+    ```
 
 
 ## Example
