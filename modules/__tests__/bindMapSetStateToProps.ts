@@ -1,60 +1,64 @@
 import bindMapSetStateToProps from '../bindMapSetStateToProps'
 import { SetState } from '../types'
 
-interface S {
-    a: number
-    b: number
-}
-
-interface ExtraP {
-    doA: () => void
-    doB: (n: number) => void
-}
-
 describe('bindMapSetStateToProps', () => {
-    it('should bind a function', () => {
-        const setState = jest.fn()
-        const bindedProps: ExtraP = bindMapSetStateToProps<{}, S, ExtraP>(
-            ({}) => (setState: SetState<{}, S>) => ({
-                doA: () => setState({ a: 1 }),
-                doB: (b: number) => setState({ b })
-            }),
-            {},
-            setState
-        )
+    describe('when mapSetStateToProps is a function', () => {
+        it('should return mapped props', () => {
+            const mapSetStateToProps = initialProps => setState => ({
+                ...initialProps,
+                initialProps,
+                setState,
+                setVisible: () => setState({ visible: true })
+            })
+            const fn = jest.fn()
+            const props = { foo: 'bar' }
 
-        expect(bindedProps.doA).toBeDefined()
-        expect(bindedProps.doB).toBeDefined()
+            const boundProps = bindMapSetStateToProps(
+                mapSetStateToProps,
+                fn,
+                props
+            )
 
-        bindedProps.doA()
+            expect(boundProps.foo).toBe('bar')
+            expect(boundProps.initialProps).toEqual(props)
+            expect(boundProps.setState).toBe(fn)
+            expect(boundProps.setVisible).toBeDefined()
 
-        expect(setState).toHaveBeenCalledWith({ a: 1 })
+            boundProps.setState({ baz: 'qux' })
 
-        bindedProps.doB(2)
+            expect(fn).toHaveBeenCalledWith({ baz: 'qux' })
 
-        expect(setState).toHaveBeenCalledWith({ b: 2 })
+            boundProps.setVisible()
+
+            expect(fn).toHaveBeenCalledWith({ visible: true })
+        })
     })
 
-    it('should bind state creators', () => {
-        const setState = jest.fn()
-        const bindedProps: ExtraP = bindMapSetStateToProps<{}, S, ExtraP>(
-            {
-                doA: () => ({ a: 1 }),
-                doB: (b: number) => ({ b })
-            },
-            {},
-            setState
-        )
+    describe('when mapSetStateToProps is an object', () => {
+        it('should return bound state creators', () => {
+            const mapSetStateToProps = {
+                setVisibility: visible => ({ visible }),
+                setVisible: () => ({ visible: true })
+            }
+            const fn = jest.fn()
+            const props = { foo: 'bar' }
 
-        expect(bindedProps.doA).toBeDefined()
-        expect(bindedProps.doB).toBeDefined()
+            const boundProps = bindMapSetStateToProps(
+                mapSetStateToProps,
+                fn,
+                props
+            ) as any
 
-        bindedProps.doA()
+            expect(boundProps.setVisibility).toBeDefined()
+            expect(boundProps.setVisible).toBeDefined()
 
-        expect(setState).toHaveBeenCalledWith({ a: 1 })
+            boundProps.setVisible()
 
-        bindedProps.doB(2)
+            expect(fn).toHaveBeenCalledWith({ visible: true })
 
-        expect(setState).toHaveBeenCalledWith({ b: 2 })
+            boundProps.setVisibility('test')
+
+            expect(fn).toHaveBeenCalledWith({ visible: 'test' })
+        })
     })
 })
