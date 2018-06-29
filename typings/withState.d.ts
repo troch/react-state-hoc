@@ -10,15 +10,15 @@ import {
 declare function withState<
     P extends {},
     S extends {},
-    ExtraP extends {} = {
+    SCreators extends {} = {
         setState?: SetState<P, S>
     },
-    MergedP extends {} = P & S & ExtraP
+    MergedP extends {} = P & S & SCreators
 >(
     initialState: InitialState<P, S>,
     mapSetStateToProps?:
-        | MapSetStateToProps<P, S, ExtraP>
-        | MapStateCreatorsToProps<P, S, ExtraP>,
-    mergeProps?: MergeProps<P, S, ExtraP, MergedP>
+        | MapSetStateToProps<P, S, SCreators>
+        | MapStateCreatorsToProps<P, S, SCreators>,
+    mergeProps?: MergeProps<P, S, SCreators, MergedP>
 ): (BaseComponent: React.ComponentType<MergedP>) => React.ComponentClass<P>
 export default withState

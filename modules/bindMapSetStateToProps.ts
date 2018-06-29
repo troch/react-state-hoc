@@ -1,19 +1,19 @@
 import { MapSetStateToProps, MapStateCreatorsToProps, SetState } from './types'
 
-export default function bindMapSetStateToProps<P, S, ExtraP>(
+export default function bindMapSetStateToProps<P, S, SCreators>(
     mapSetStateToProps:
-        | MapSetStateToProps<P, S, ExtraP>
-        | MapStateCreatorsToProps<P, S, ExtraP>,
+        | MapSetStateToProps<P, S, SCreators>
+        | MapStateCreatorsToProps<P, S, SCreators>,
     setState: SetState<P, S>,
     initialProps: P
-): ExtraP {
+): SCreators {
     if (typeof mapSetStateToProps === 'function') {
         return mapSetStateToProps(initialProps)(setState)
     }
 
     if (typeof mapSetStateToProps === 'object') {
         return Object.keys(mapSetStateToProps).reduce(
-            (mappedProps: Partial<ExtraP>, propName: string) => {
+            (mappedProps: Partial<SCreators>, propName: string) => {
                 const stateFactory = mapSetStateToProps[propName]
 
                 mappedProps[propName] = (...args) =>
@@ -22,8 +22,8 @@ export default function bindMapSetStateToProps<P, S, ExtraP>(
                 return mappedProps
             },
             {}
-        ) as ExtraP
+        ) as SCreators
     }
 
-    return {} as ExtraP
+    return {} as SCreators
 }

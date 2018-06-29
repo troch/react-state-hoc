@@ -13,23 +13,23 @@ const defaultMapSetStateToProps: MapSetStateToProps<{}, {}, {}> = () => {
     return setState => ({ setState })
 }
 
-const defaultMergeProps = (state, mappedProps, props) => ({
+const defaultMergeProps = (state, stateCreators, props) => ({
     ...props,
     ...state,
-    ...mappedProps
+    ...stateCreators
 })
 
 function withState<
     P extends {},
     S extends {},
-    ExtraP extends {} = { setState?: SetState<P, S> },
-    MergedP extends {} = P & S & ExtraP
+    SCreators extends {} = { setState?: SetState<P, S> },
+    MergedP extends {} = P & S & SCreators
 >(
     initialState: InitialState<P, S>,
     mapSetStateToProps?:
-        | MapSetStateToProps<P, S, ExtraP>
-        | MapStateCreatorsToProps<P, S, ExtraP>,
-    mergeProps?: MergeProps<P, S, ExtraP, MergedP>
+        | MapSetStateToProps<P, S, SCreators>
+        | MapStateCreatorsToProps<P, S, SCreators>,
+    mergeProps?: MergeProps<P, S, SCreators, MergedP>
 ) {
     return (
         BaseComponent: React.ComponentType<MergedP>
@@ -37,8 +37,8 @@ function withState<
         return class StateHoc extends React.Component<P, S> {
             public static displayName: string = 'WithState'
 
-            public mappedProps: ExtraP
-            public merge: MergeProps<P, S, ExtraP, MergedP>
+            public stateCreators: SCreators
+            public merge: MergeProps<P, S, SCreators, MergedP>
 
             constructor(props) {
                 super(props)
@@ -49,12 +49,12 @@ function withState<
 
                 this.setState = this.setState.bind(this)
 
-                this.mappedProps = bindMapSetStateToProps(
+                this.stateCreators = bindMapSetStateToProps(
                     mapSetStateToProps ||
                         (defaultMapSetStateToProps as MapSetStateToProps<
                             P,
                             S,
-                            ExtraP
+                            SCreators
                         >),
                     this.setState as SetState<P, S>,
                     this.props
@@ -64,11 +64,11 @@ function withState<
             }
 
             public render() {
-                const { state, props, setState, mappedProps, merge } = this
+                const { state, props, setState, stateCreators, merge } = this
 
                 return React.createElement(
                     BaseComponent,
-                    merge(props, state, mappedProps)
+                    merge(props, state, stateCreators)
                 )
             }
         }
