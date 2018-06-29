@@ -4,8 +4,7 @@ import {
     MergeProps,
     MapSetStateToProps,
     MapStateCreatorsToProps,
-    SetState,
-    SetStateProp
+    SetState
 } from './types'
 import bindMapSetStateToProps from './bindMapSetStateToProps'
 
@@ -13,7 +12,7 @@ const defaultMapSetStateToProps: MapSetStateToProps<{}, {}, {}> = () => {
     return setState => ({ setState })
 }
 
-const defaultMergeProps = (state, stateCreators, props) => ({
+const defaultMergeProps = (props, state, stateCreators) => ({
     ...props,
     ...state,
     ...stateCreators
@@ -64,7 +63,7 @@ function withState<
             }
 
             public render() {
-                const { state, props, setState, stateCreators, merge } = this
+                const { state, props, stateCreators, merge } = this
 
                 return React.createElement(
                     BaseComponent,
