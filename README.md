@@ -19,7 +19,7 @@ yarn add react-state-hoc
 
 ### withState(initialState, mapSetStateToProps?, mergeProps?)(BaseComponent)
 
-Wraps your `BaseComponent` with a stateful component, passing the state into the `BaseComponent` as props. By default, state will be spread into the component's props, plus the `setState` function is passed through.
+Wraps your `BaseComponent` with a stateful component, passing the state into the `BaseComponent` as props. By default, state will be spread into the component's props, plus the `setState` function is passed through. If you specify a `mapSetStateToProps` function, `setState` will not be passed through.
 
 Two optional arguments allow you to a) define state creators, and b) customise which props are passed into the `BaseComponent`.
 
@@ -60,9 +60,10 @@ Two optional arguments allow you to a) define state creators, and b) customise w
 
         ```js
         () => setState => ({ setState })
+        
         ```
 
-* `mergeProps`: A function mapping the current `state`, `stateCreators`, and `props` into the `BaseComponent`'s props.
+* `mergeProps`: A function mapping the current `props`, `state` and `stateCreators` into the `BaseComponent`'s props.
 
     ```js
     withState(
@@ -79,7 +80,7 @@ Two optional arguments allow you to a) define state creators, and b) customise w
     **Default:**
 
     ```js
-    (state, creators, props) => ({ ...props, ...creators, ...state })
+    (props, state, stateCreators) => ({ ...props, ...state, ...stateCreators })
     ```
 
 
