@@ -17,8 +17,10 @@ export type MapSetStateToProps<P, S, ExtraP> = (
     initialProps: P
 ) => (setState: SetState<P, S>) => ExtraP
 
-export type MapStateCreatorsToProps<S, ExtraP> = {
-    [K in keyof ExtraP]: (...args: any[]) => Partial<S>
+export type MapStateCreatorsToProps<P, S, ExtraP> = {
+    [K in keyof ExtraP]: (
+        ...args: any[]
+    ) => ((prevState: Readonly<S>, props: P) => Partial<S>) | Partial<S>
 }
 
 export type InitialState<P, S> = S | ((initialProps: Readonly<P>) => S | null)

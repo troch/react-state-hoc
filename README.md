@@ -37,7 +37,7 @@ Two optional arguments allow you to a) define state creators, and b) customise w
         ```
 
 *   `mapSetStateToProps` can be either:
-    * An object, containing state creators. Each state creator is a function which maps input arguments to new state. State creators are a convenient shorthand which automatically binds `setState` into smaller functions.
+    * An object, containing state creators. Each state creator is a function which maps input arguments to new state. State creators are a convenient shorthand which automatically binds `setState` into smaller functions. Functions can also be provided as well as objects: they are supported by `setState` (see [https://reactjs.org/docs/react-component.html#setstate](https://reactjs.org/docs/react-component.html#setstate))
 
         ```js
         withState(

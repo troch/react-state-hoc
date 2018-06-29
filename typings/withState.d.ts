@@ -4,10 +4,8 @@ import {
     InitialState,
     MergeProps,
     MapSetStateToProps,
-    MapStateCreatorsToProps,
-    SetState
+    MapStateCreatorsToProps
 } from './types'
-
 declare function withState<
     P extends {},
     S extends {},
@@ -17,7 +15,7 @@ declare function withState<
     initialState: InitialState<P, S>,
     mapSetStateToProps?:
         | MapSetStateToProps<P, S, ExtraP>
-        | MapStateCreatorsToProps<S, ExtraP>,
+        | MapStateCreatorsToProps<P, S, ExtraP>,
     mergeProps?: MergeProps<P, S, ExtraP, MergedP>
 ): (BaseComponent: React.ComponentType<MergedP>) => React.ComponentClass<P>
 export default withState

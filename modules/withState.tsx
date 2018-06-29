@@ -28,7 +28,7 @@ function withState<
     initialState: InitialState<P, S>,
     mapSetStateToProps?:
         | MapSetStateToProps<P, S, ExtraP>
-        | MapStateCreatorsToProps<S, ExtraP>,
+        | MapStateCreatorsToProps<P, S, ExtraP>,
     mergeProps?: MergeProps<P, S, ExtraP, MergedP>
 ) {
     return (
