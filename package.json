@@ -1,6 +1,6 @@
 {
   "name": "react-state-hoc",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "A React higher-order component for abstracting state away",
   "main": "index.js",
   "jsnext:main": "index.es.js",
@@ -34,6 +34,7 @@
     "@types/enzyme": "~3.1.10",
     "@types/jest": "~22.2.3",
     "@types/react": "~16.3.14",
+    "conventional-changelog-cli": "^2.0.1",
     "enzyme": "~3.3.0",
     "enzyme-adapter-react-16": "~1.1.1",
     "husky": "~0.14.3",
@@ -53,20 +54,33 @@
     "react": "^15.0.0 || ^16.0.0"
   },
   "lint-staged": {
-      "*.{ts,tsx}": ["prettier --write", "tslint", "git add"],
-      "*.{js}": ["prettier --write", "git add"]
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "tslint",
+      "git add"
+    ],
+    "*.{js}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "jest": {
-      "transform": {
-          "^.+\\.tsx?$": "ts-jest"
-      },
-      "testRegex": "modules/__tests__/.*",
-      "moduleFileExtensions": ["tsx", "ts", "js"],
-      "setupFiles": ["<rootDir>/test.config.js"],
-      "globals": {
-          "ts-jest": {
-              "tsConfigFile": "tsconfig.json"
-          }
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "modules/__tests__/.*",
+    "moduleFileExtensions": [
+      "tsx",
+      "ts",
+      "js"
+    ],
+    "setupFiles": [
+      "<rootDir>/test.config.js"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
       }
+    }
   }
 }
