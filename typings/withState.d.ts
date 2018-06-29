@@ -4,13 +4,16 @@ import {
     InitialState,
     MergeProps,
     MapSetStateToProps,
-    MapStateCreatorsToProps
+    MapStateCreatorsToProps,
+    SetState
 } from './types'
 declare function withState<
     P extends {},
     S extends {},
-    ExtraP extends {} = {},
-    MergedP extends {} = {}
+    ExtraP extends {} = {
+        setState?: SetState<P, S>
+    },
+    MergedP extends {} = P & S & ExtraP
 >(
     initialState: InitialState<P, S>,
     mapSetStateToProps?:

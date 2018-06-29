@@ -22,8 +22,8 @@ const defaultMergeProps = (state, mappedProps, props) => ({
 function withState<
     P extends {},
     S extends {},
-    ExtraP extends {} = {},
-    MergedP extends {} = {}
+    ExtraP extends {} = { setState?: SetState<P, S> },
+    MergedP extends {} = P & S & ExtraP
 >(
     initialState: InitialState<P, S>,
     mapSetStateToProps?:
@@ -68,7 +68,7 @@ function withState<
 
                 return React.createElement(
                     BaseComponent,
-                    merge(state, mappedProps, props)
+                    merge(props, state, mappedProps)
                 )
             }
         }

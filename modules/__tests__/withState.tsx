@@ -29,7 +29,7 @@ describe('withState', () => {
             <button onClick={() => setVisibility(!visible)}>Toggle</button>
         )
 
-        const ComponentWithState = withState(
+        const ComponentWithState = withState<{}, {}, {}>(
             { visible: false },
             {
                 setVisibility: visible => ({ visible })
@@ -52,7 +52,7 @@ describe('withState', () => {
             <button onClick={() => setVisibility(!visible)}>Toggle</button>
         )
 
-        const ComponentWithState = withState(
+        const ComponentWithState = withState<{}, {}, {}>(
             { visible: false },
             () => setState => ({
                 setVisibility: visible => setState({ visible })
@@ -78,18 +78,18 @@ describe('withState', () => {
         const ComponentWithState = withState(
             { visible: false },
             null,
-            (state, setStateProps, initialProps) => ({
+            (props, state, mappedProps) => ({
                 state,
-                initialProps
+                props,
+                ...mappedProps
             })
         )(Component)
 
         const wrapper = mount(<ComponentWithState />)
         const component = wrapper.find(Component)
 
-        expect(component.props()).toEqual({
-            state: { visible: false },
-            initialProps: {}
-        })
+        expect(component.prop('state')).toEqual({ visible: false })
+        expect(component.prop('props')).toEqual({})
+        expect(typeof component.prop('setState')).toBe('function')
     })
 })

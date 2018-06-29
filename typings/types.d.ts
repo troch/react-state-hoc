@@ -6,9 +6,9 @@ export interface SetStateProp<P, S> {
     setState: SetState<P, S>
 }
 export declare type MergeProps<P, S, ExtraP, MergedP> = (
-    state?: S,
-    setStateProps?: ExtraP,
-    initialProps?: P
+    props: P,
+    state: S,
+    setStateProps: ExtraP
 ) => MergedP
 export declare type MapSetStateToProps<P, S, ExtraP> = (
     initialProps: P
