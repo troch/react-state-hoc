@@ -10,6 +10,7 @@
   "scripts": {
     "test": "jest",
     "build": "rollup -c rollup.config.js",
+    "postbuild": "prettier typings/*.d.ts --write",
     "clog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "precommit": "lint-staged"
   },
