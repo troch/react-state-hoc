@@ -69,7 +69,7 @@ Two optional arguments allow you to a) define state creators, and b) customise w
     withState(
         { visible: true },
         { setVisibility: visible => ({ visible }) },
-        (state, stateCreators, props) => ({
+        (props, state, stateCreators) => ({
             ...state,
             ...stateCreators
             // deliberately not passing props through to BaseComponent
